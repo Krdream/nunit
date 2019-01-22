@@ -12,9 +12,9 @@ build_script:
 #  - ps: .\build.ps1 -Target "Appveyor" -Configuration "Release"
 #  - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=YourSonarQubeToken"
    - dotnet tool install --global dotnet-sonarscanner
-   - dotnet sonarscanner begin /k:"Krdream_nunit" /d:sonar.organization="krdream" /d:sonar.host.url="https://sonarcloud.io" 
+   - dotnet sonarscanner begin /k:"Krdream_nunit" /d:sonar.organization="krdream" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="3c91df60e99d643c9af31a89dcacc975d6d887a9"
    - ps: .\build.ps1 -Target "Appveyor" -Configuration "Release"
-   - dotnet sonarscanner end 
+   - dotnet sonarscanner end /d:sonar.login="3c91df60e99d643c9af31a89dcacc975d6d887a9"
 
 
 # disable built-in tests.
