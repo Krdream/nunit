@@ -4,20 +4,30 @@ branches:
   except:
     - /travis-.*/
 
+before_build:
+  - nuget restore
 build_script:
-  - ps: .\build.ps1 -Target "Appveyor" -Configuration "Release"
+#  - choco install "msbuild-sonarqube-runner" -y
+#  - MSBuild.SonarQube.Runner.exe begin /k:"YourUniqueProjectName" /d:"sonar.host.url=https://sonarqube.com" /d:"sonar.login=YourSonarQubeToken"
+#  - ps: .\build.ps1 -Target "Appveyor" -Configuration "Release"
+#  - MSBuild.SonarQube.Runner.exe end /d:"sonar.login=YourSonarQubeToken"
+   - dotnet tool install --global dotnet-sonarscanner
+   - dotnet sonarscanner begin /k:"Krdream_nunit" /d:sonar.organization="krdream" /d:sonar.host.url="https://sonarcloud.io" 
+   - ps: .\build.ps1 -Target "Appveyor" -Configuration "Release"
+   - dotnet sonarscanner end 
+
 
 # disable built-in tests.
 test: off
 
-deploy:
-  - provider: NuGet
-    server: https://www.myget.org/F/nunit/api/v2
-    api_key:
-      secure: wtAvJDVl2tfwiVcyLExFHLvZVfUWiQRHsfdHBFCNEATeCHo1Nd8JP642PfY8xhji
-    skip_symbols: true
-    on:
-      branch: master
+#deploy:
+#  - provider: NuGet
+#    server: https://www.myget.org/F/nunit/api/v2
+#    api_key:
+#      secure: wtAvJDVl2tfwiVcyLExFHLvZVfUWiQRHsfdHBFCNEATeCHo1Nd8JP642PfY8xhji
+#    skip_symbols: true
+#    on:
+#      branch: master
       
 # For PRs, skip the branch run and only run against the virtual PR merge.
 skip_branch_with_pr: true
